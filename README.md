@@ -18,7 +18,7 @@ BigCloneBench:[https://github.com/jeffsvajlenko/BigCloneEval](https://github.com
  3. RAM 32.00GB
 	RAM should be no less than 32.00GB, otherwise the experiment will collapse.
 
-## software environment configurati
+## software environment configuration
 ![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/1.PNG)
 
 # 2 Steps of experiment
@@ -34,9 +34,11 @@ workspace is: Recursive_autoencoder_xiaojie_256_dimension
  3. about the args
 	 1. E:\bcb_reduced\ is directory of the source  repository of [BigCloneBench](https://github.com/jeffsvajlenko/BigCloneEval)
 	 2. 'G:\data_of_zengjie\analysisBigCloneBench\method\corpus' specify the following:
+	
 		-the generated corpus of sentences are stored in G:\data_of_zengjie\analysisBigCloneBench\method\
 		-the file storing generated corpus of sentences has a filename with 'corpus' as the prefix
 	 3. 'G:\data_of_zengjie\analysisBigCloneBench\method\writerpath' specify the following:
+		
 		-the file recording all functions' locations are stored in G:\data_of_zengjie\analysisBigCloneBench\method\
 		-the file has a filename with 'writerpath' as the prefix
 	4. 0 100000 respectively denotes that the analysed function should have lens larger than 0 and lower than 100000. Of course, they can be modified.
@@ -49,6 +51,7 @@ workspace is: Recursive_autoencoder_xiaojie_256_dimension
 	 - *notProcessedToCorpus_files_bcb_reduced.method* records all functions which are not processed and the reasons why they are not processed.
 	 - *writerpath_bcb_reduced.method* record every function's location in corresponding Java File.
  5. matters  needing  attention
+	
 	the folder *G:\data_of_zengjie\analysisBigCloneBench\method\* must be built  in advance, otherwise it will prompt the error of not finding the path.
 ## Step 2: copy the following files above to  ***\Recursive_autoencoder_xiaojie_256_dimension\1corpusData***
  1. corpus_bcb_reduced.method.txt
@@ -109,17 +112,19 @@ configuration['corpus_fixed_tree_construction_parentType_weight_file']='./1corpu
 2. run the training program
 > python ./1_train_traditional_RAE_on_BigCloneBench_hunxiao.py
 3. The training results
+
 ![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/7.png)
 ![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/8.png)
 ## Step 7: compare the traditional and weighted RAE on the BigCloneBench data set
 1. dataset preparation
+	
 	I preprocessed BigCloneBench , mainly analyzes the CLONES table and FALSEPOSITIVES table in this database.The former stores positive clones, while the latter stores negative clones.
 Through the analysis , we found that 25 functions in BigCloneBench were incorrectly marked. See ***functions_with_wrong_location_bigclonebench.txt*** for details.
 	In addition, we removed duplicate clone pairs marked by BigCloneBench. See ***Duplicate_clone_pair_record.txt*** file.
 Finally, the remaining BigCloneBench clone pairs (positive or negative labels)  are stored into ***all_pairs_id_xiaoje.pkl***.
 	We store each clone pair's corresponding clone type in the ***all_clone_id_pair_clonetype_xiaojie.pkl*** file.
-	Most importantly, the functions' Numbers marked in BigCloneBench are inconsistent with those in our corpus ***corpus_bcb_reduce.method.txt***. We map the function Numbers in BigCloneBench to our function Numbers (lines in the txt) in ***corpus_bcb_reduce.method.txt*** and storing them in the ***all_idmapline_xiaoje.pkl*** file.
-添加一张图片
+	Most importantly, the functions' Numbers marked in BigCloneBench are inconsistent with those in our corpus ***corpus_bcb_reduce.method.txt***. We map the function Numbers in BigCloneBench to our function Numbers (lines in the txt) in ***corpus_bcb_reduce.method.txt*** and storing them in the ***all_idmapline_xiaojie.pkl*** file.
+
 2. using two different models to obtain the vector representation for each function in BigCloneBench respectively.
 	In Anaconda, starts the python3.6.5 environment and then runs the command
 	>     python. /1 _2_using_traditional_rae_on_bigclonebench_hunxiao.py
