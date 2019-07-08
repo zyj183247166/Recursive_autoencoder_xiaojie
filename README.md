@@ -1,6 +1,6 @@
 # Fast Clone Detection Based on Weighted Recursive Autoencoders
 
-use Weighted Recursive Autoencoders to learn the target software system, model all functions to vectors, and at last use NSG algorithm to detect clone Pair.
+use Weighted Recursive Autoencoders to learn the target software system, model all functions to vectors, and at last use NSG algorithm to detect clone Pair. ***Some core codes are obscured***.
 
 # 0 Acknowledgement
 
@@ -82,11 +82,12 @@ workspace is: Recursive_autoencoder_xiaojie_256_dimension
 ## Step 5: process word2vec.Out and the corpus file.
 1. Start terminal from anaconda
 2. run the command 
+
 > cd \Recursive_autoencoder_xiaojie_256_dimension\
 > python ./run_postprocess.py --w2v ./2word2vecOutData/word2vec.out  --src ./1corpusData/corpus_bcb_reduced.method.txt
 3. the another  three files will be produced:
 	添加一张图片
-## Step 6: train traditional Recursive AutoEncoders.
+## Step 6: train Recursive AutoEncoders.
 	
 1. configure in **train_traditional_RAE_configuration.py**
 > configuration={}
@@ -105,12 +106,94 @@ configuration['corpus_fixed_tree_constructionorder_file']='G:/code_of_zengjie/De
 configuration['batch_size']=10 
 configuration['batch_size_using_model_notTrain']=400 
 configuration['MAX_SENTENCE_LENGTH_for_Bigclonebench']=600
+configuration['corpus_fixed_tree_construction_parentType_weight_file']='./1corpusData/corpus_bcb_reduced.method.AstConstructionParentTypeWeight.txt'
 2. run the training program
 > python ./1_train_traditional_RAE_on_BigCloneBench_hunxiao.py
+3. The training results
+添加两张图片
+## Step 7: compare the traditional and weighted RAE on the BigCloneBench data set
+1. dataset preparation
+	I preprocessed BigCloneBench , mainly analyzes the CLONES table and FALSEPOSITIVES table in this database.The former stores positive clones, while the latter stores negative clones.
+Through the analysis , we found that 25 functions in BigCloneBench were incorrectly marked. See ***functions_with_wrong_location_bigclonebench.txt*** for details.
+	In addition, we removed duplicate clone pairs marked by BigCloneBench. See ***Duplicate_clone_pair_record.txt*** file.
+Finally, the remaining BigCloneBench clone pairs (positive or negative labels)  are stored into ***all_pairs_id_xiaoje.pkl***.
+	We store each clone pair's corresponding clone type in the ***all_clone_id_pair_clonetype_xiaojie.pkl*** file.
+	Most importantly, the functions' Numbers marked in BigCloneBench are inconsistent with those in our corpus ***corpus_bcb_reduce.method.txt***. We map the function Numbers in BigCloneBench to our function Numbers (lines in the txt) in ***corpus_bcb_reduce.method.txt*** and storing them in the ***all_idmapline_xiaoje.pkl*** file.
+添加一张图片
+2. using two different models to obtain the vector representation for each function in BigCloneBench respectively.
+	In Anaconda, starts the python3.6.5 environment and then runs the command
+	>     python. /1 _2_using_traditional_rae_on_bigclonebench_hunxiao.py
+	The results calculated for each vector by **unweighted RAE** are stored in:
 
-## Step 7: train weighted Recursive AutoEncoders.
-1. configure in  **train_weighted_RAE_configuration.py**
- one more configuration than Step 6:
->**configuration['corpus_fixed_tree_construction_parentType_weight_file']='./1corpusData/corpus_bcb_reduced.method.AstConstructionParentTypeWeight.txt'**
-2. run the training program
-> python ./2_train_weighted_RAE_on_BigCloneBench_hunxiao.py
+	    ./vector/tkqnm_BigCloneBench_traditionalRAE_ID_Map_Vector_root. Xiaojiepkl
+
+	You can query with function ID in BigCloneBench as the key value. ***'TKQNM'*** is a random name that changes with each execution.
+		then runs the command
+     `python. /1_3_using_weighted_rae_on_bigclonebench_hunxiao.py`
+	The results calculated for each vector by **weighted RAE** are stored in:
+***`./vector/childparentweight/enoyz_using_Weigthed_RAE_BigCloneBenchFunction_ID_Map_Vector_weighted.xiaojiepkl`***
+'enoyz' is a random name that changes with each execution.
+3. getting the indicators two models.
+run the ***3_evaluate_on_BigCloneBench.py*** file
+the evaluation results of two models set with different distance thresholds are saved into: ***./result/unweighted_BigCloneBench_traditionalRAE_metrics_root.xiaojiepkl***
+and 
+***./result/weighted_BigCloneBench_traditionalRAE_metrics_root_TF-IDF.xiaojiepkl***
+4. visualize the indicators of two models.
+
+	Let's go ahead and run
+
+    `python 4_visualizeTheIndicatorsOnBigCloneBench.py`
+## Step 8: directly apply the weighted RAE to *bcd_reduced* source code library
+1. Generates a vector representation for each function in the bcd_reduced source library
+		
+	run the below program.
+	> python 1_4_using_weighted_rae_on_bcd_reduced.py
+	
+	As the program is run with too many parameters, it is impossible to save all the vectors of functions in one time. 					
+	We will save multiple PKL files into the vector directory in batches, and the naming rule is
+
+	***0_fullcorpusline_map_vector_mean***
+
+	***1_fullcorpusline_map_vector_mean***
+
+	....
+
+	A series of PKL files are generated.We then run the file ***6_mergepkl.py***
+	we then Merge all PKL files and generate one:
+	***using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.xiaojiepkl*** and along with 	***Using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.npy***
+	The row number of the matrix corresponds to the function number in the whole corpus. There are 785438 lines in total, and each line of vector represents the corresponding function.
+
+## Step 9: use NSG algorithm for cloning detection and report the results, , evaluating its scalability and geting results.
+
+We copy ***using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted. npy*** to the vmware virtual machine (Ubuntu 18 64bit) with an NSG project.
+1. convert the npy file to fvec file using yael's fvecs_fwrite function
+	***using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.fvec***
+2. build the KNN diagram
+
+> /home/xiaojie/Desktop/efanna_graph-master/tests/test_nndescent
+> ./using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.fvecs
+> ./using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.200NN.graph
+> 200 200 8 10 100
+
+3. transform KNN graph into NSG graph
+
+> /home/xiaojie/Desktop/nsg/build/tests/test_nsg_index ./using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.fvecs ./using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.200NN.graph 40 300 500 ./using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.nsg
+
+4. retrieves in the NSG graph and returns the 200 nearest neighbors of each vector.
+
+> /home/xiaojie/Desktop/nsg/build/tests/test_nsg_optimized_search
+> ./using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.fvecs
+> ./using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.fvecs
+> ./using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.nsg 201 200
+> ./RESULT_using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted.ivecs
+5. copy RESULT_using_Weigthed_RAE_fullCorpusLine_Map_Vector_weighted. ivecs back to the nsg_result directory in the host's Windows system.
+	The detection results under different thresholds are returned here. It's going to be a lot of computation and it's going to take some time.
+6. run ***7_processing_nsgresult_tocloneresult_by_therold.py***
+	it will produce some files.
+	添加一些图片
+	Each file records the detection results under the specified threshold.
+7. run ***8_evaluate_cloneresultbyNSG_onBigCloneBench.py***
+	the results will be stored into ***metrices_onFullCorpusWithNSG_WeightedRAE_differentTherolds.xiaojiepkl***
+	Then you can compare it with directly using weighted RAE on tagged clone pairs in BigCloneBench by executing the ***experimentID_6()*** in this python file.
+	It can be seen that, with the increase of threshold value, due to the limitation of the number of nearest neighbors searched by NSG, the recall rate of the algorithm using NSG in the later stage is far less than that of the algorithm without NSG. But we donot need to set the distance threshold larger because it will also produce more fasle positives.
+## END (the experiments in the corresponding paper).
