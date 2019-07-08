@@ -18,9 +18,8 @@ BigCloneBench:[https://github.com/jeffsvajlenko/BigCloneEval](https://github.com
  3. RAM 32.00GB
 	RAM should be no less than 32.00GB, otherwise the experiment will collapse.
 
-## software environment configuration 
-
-添加一张图片
+## software environment configurati
+![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/1.PNG)
 
 # 2 Steps of experiment
 
@@ -43,7 +42,7 @@ workspace is: Recursive_autoencoder_xiaojie_256_dimension
 	4. 0 100000 respectively denotes that the analysed function should have lens larger than 0 and lower than 100000. Of course, they can be modified.
  4. about the output 
 		under the directory will exist the following files.
-		添加一张图片
+	![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/2.png)
 	 - *corpus_bcb_reduced.method.txt* records the corpus of sentences of which
 	   every sentence are extracted from a corresponding function.
 	 - *corpus_bcb_reduced.method.AstConstruction*  records all sentences' full binary trees transformed from the corresponding functions.
@@ -59,7 +58,7 @@ workspace is: Recursive_autoencoder_xiaojie_256_dimension
 ## Step 3: computing all TF-IDFs of those nonTerminal Types.
 
  run AnalyseTFIDFofNonTerminalType.py. Another two files will be produced in ***\Recursive_autoencoder_xiaojie_256_dimension\1corpusData***
- 添加一张图片
+![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/3.png)
 
  1. *Corpus_bcb_reduced.Method.AstConstructionParentType.TXT* record all types of nonterminal nodes corresponding to every function's full
     binary tree. (in post-order traversal)
@@ -77,8 +76,8 @@ workspace is: Recursive_autoencoder_xiaojie_256_dimension
 	> ./run_word2vec.sh ./1corpusData/corpus_bcb_reduced.method.txt ./2word2vecOutData 296
 
 	296 represents the dimensions of the word vector.The output is '*./2 word2vecoutdata/word2vec.Out*'
-	添加两张图片
-	添加两张图片
+	![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/4.png)
+	![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/5.png)
 ## Step 5: process word2vec.Out and the corpus file.
 1. Start terminal from anaconda
 2. run the command 
@@ -86,7 +85,7 @@ workspace is: Recursive_autoencoder_xiaojie_256_dimension
 > cd \Recursive_autoencoder_xiaojie_256_dimension\
 > python ./run_postprocess.py --w2v ./2word2vecOutData/word2vec.out  --src ./1corpusData/corpus_bcb_reduced.method.txt
 3. the another  three files will be produced:
-	添加一张图片
+	![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/6.png)
 ## Step 6: train Recursive AutoEncoders.
 	
 1. configure in **train_traditional_RAE_configuration.py**
@@ -110,7 +109,8 @@ configuration['corpus_fixed_tree_construction_parentType_weight_file']='./1corpu
 2. run the training program
 > python ./1_train_traditional_RAE_on_BigCloneBench_hunxiao.py
 3. The training results
-添加两张图片
+![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/7.png)
+![image](https://github.com/zyj183247166/Recursive_autoencoder_xiaojie/blob/master/8.png)
 ## Step 7: compare the traditional and weighted RAE on the BigCloneBench data set
 1. dataset preparation
 	I preprocessed BigCloneBench , mainly analyzes the CLONES table and FALSEPOSITIVES table in this database.The former stores positive clones, while the latter stores negative clones.
