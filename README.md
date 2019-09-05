@@ -1,6 +1,6 @@
 # Fast Clone Detection Based on Weighted Recursive Autoencoders
 
-use Weighted Recursive Autoencoders to learn the target software system, model all functions to vectors, and at last use NSG algorithm to detect clone Pair. ***Some core codes are obscured***. Every question if you encounter, you can directyly concat my email zyj183247166@qq.com. 
+use Weighted Recursive Autoencoders to learn the target software system, model all functions to vectors, and at last use NSG algorithm to detect clone Pair. Every question if you encounter, you can directyly concat my email zyj183247166@qq.com. 
 
 Because the GitHub has storage space constraints, the data after the step 1-3 below are shared at the Baidu Netdisk with the link and password as:
 LINK：https://pan.baidu.com/s/1zaX1YMLmLsr3EKXK8nrOjA 
