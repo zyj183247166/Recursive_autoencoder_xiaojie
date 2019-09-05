@@ -2,6 +2,17 @@
 
 use Weighted Recursive Autoencoders to learn the target software system, model all functions to vectors, and at last use NSG algorithm to detect clone Pair. ***Some core codes are obscured***. Every question if you encounter, you can directyly concat my email zyj183247166@qq.com. 
 
+Because the GitHub has storage space constraints, the data after the step 1-3 below are shared at the Baidu Netdisk with the link and password as:
+LINK：https://pan.baidu.com/s/1zaX1YMLmLsr3EKXK8nrOjA 
+PASSWORD：tzib 
+
+And, the database of BigCloneBench is processed and the data about the TrueClonePairs, FalseClonePairs and CloneTypoes are shared at the Baidu Netdisk with the link and password as:
+
+LINK：https://pan.baidu.com/s/1S7iQnsjJgHnsh5NzHc196Q 
+PASSWORD：whtc 
+
+After download the two dataset in the above links, there are two folders named as "1corpusData" and "SplitDataSet". Please copy them to the folder "Recursive_autoencoder_xiaojie_296_dimension" as two subfolders. Otherwise, some programs cannot be runned correctly without these data.
+
 # 0 Acknowledgement
 
 I very appreciate Martin White,  Cong Fu and Jeffrey Svajlenko for offering much help about ast2bin, NSG and  BigCloneBench respectively. I email a lot to them for some help. 
